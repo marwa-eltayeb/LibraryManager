@@ -12,19 +12,33 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    @FXML
     TextField editId;
+    @FXML
     TextField editTitle;
+    @FXML
     TextField editAuthor;
+    @FXML
     TextField editYear;
+    @FXML
     TextField editPages;
+    @FXML
     Button btnInsert;
+    @FXML
     Button btnUpdate;
+    @FXML
     Button btnDelete;
+    @FXML
     TableView tvBooks;
+    @FXML
     TableColumn colISBN;
+    @FXML
     TableColumn colTitle;
+    @FXML
     TableColumn colAuthor;
+    @FXML
     TableColumn colYear;
+    @FXML
     TableColumn colPages;
 
     @Override
