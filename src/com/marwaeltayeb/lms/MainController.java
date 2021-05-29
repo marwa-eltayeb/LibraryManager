@@ -91,6 +91,15 @@ public class MainController implements Initializable {
             System.out.println(book.getId());
             deleteFromDB(book.getId());
             showBooks();
+            clear();
         }
+    }
+
+    private void clear(){
+        editISBN.setText("");
+        editTitle.setText("");
+        editAuthor.setText("");
+        editYear.setText("");
+        editPages.setText("");
     }
 }
