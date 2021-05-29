@@ -72,4 +72,17 @@ public class MainController implements Initializable {
         editYear.setText(String.valueOf(book.getYear()));
         editPages.setText(String.valueOf(book.getPages()));
     }
+
+    public void insert(ActionEvent actionEvent) {
+        int isbn = Integer.parseInt(editISBN.getText());
+        String title = editTitle.getText();
+        String author = editAuthor.getText();
+        int year = Integer.parseInt(editYear.getText());
+        int pages = Integer.parseInt(editPages.getText());
+
+        Book book = new Book(isbn, title, author, year, pages);
+        insertToDB(book);
+        showBooks();
+    }
+
 }

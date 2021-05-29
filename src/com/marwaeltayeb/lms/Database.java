@@ -49,4 +49,24 @@ public class Database {
         }
         return books;
     }
+
+    public static void insertToDB(Book book){
+        Connection connection = getConnection();
+        Statement stmt = null;
+        try {
+            connection.setAutoCommit(false);
+            stmt = connection.createStatement();
+            String sql = "INSERT INTO books (isbn,title, author, year, pages) " +
+                    "VALUES ('" + book.getIsbn() + "', '" + book.getTitle() + "', '" + book.getAuthor() + "' ,'" + book.getYear() + "', '" + book.getPages() + "')";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            connection.commit();
+            connection.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Records created successfully");
+    }
+
 }
