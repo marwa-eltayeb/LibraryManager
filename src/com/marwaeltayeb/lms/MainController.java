@@ -64,4 +64,12 @@ public class MainController implements Initializable {
         tvBooks.setItems(list);
     }
 
+    public void handleMouseAction(MouseEvent mouseEvent) {
+        Book book = tvBooks.getSelectionModel().getSelectedItem();
+        editISBN.setText(String.valueOf(book.getIsbn()));
+        editTitle.setText(book.getTitle());
+        editAuthor.setText(book.getAuthor());
+        editYear.setText(String.valueOf(book.getYear()));
+        editPages.setText(String.valueOf(book.getPages()));
+    }
 }

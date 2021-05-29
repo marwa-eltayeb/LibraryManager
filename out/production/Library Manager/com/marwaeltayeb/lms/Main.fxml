@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="268.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
+<AnchorPane prefHeight="268.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
    <children>
       <VBox layoutX="20.0" layoutY="27.0" prefHeight="167.0" prefWidth="100.0" spacing="20.0">
          <children>
@@ -15,16 +15,16 @@
          </children></VBox>
       <VBox layoutX="104.0" layoutY="27.0" prefHeight="174.0" prefWidth="181.0" spacing="10.0">
          <children>
-            <TextField fx:id="editId" prefHeight="25.0" prefWidth="111.0" />
+            <TextField fx:id="editISBN" prefHeight="25.0" prefWidth="111.0" />
             <TextField fx:id="editTitle" layoutX="10.0" layoutY="10.0" />
             <TextField fx:id="editAuthor" layoutX="10.0" layoutY="35.0" />
             <TextField fx:id="editYear" layoutX="10.0" layoutY="60.0" />
             <TextField fx:id="editPages" layoutX="10.0" layoutY="85.0" />
          </children></VBox>
-      <Button fx:id="btnInsert" layoutX="14.0" layoutY="222.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Insert" />
-      <Button fx:id="btnUpdate" layoutX="107.0" layoutY="222.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Update" />
-      <Button fx:id="btnDelete" layoutX="186.0" layoutY="222.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Delete" />
-       <TableView fx:id="tvBooks" layoutX="309.0" layoutY="27.0" prefHeight="220.0" prefWidth="482.0">
+      <Button fx:id="btnInsert" layoutX="14.0" layoutY="222.0" mnemonicParsing="false"  prefHeight="25.0" prefWidth="87.0" text="Insert" />
+      <Button fx:id="btnUpdate" layoutX="107.0" layoutY="222.0" mnemonicParsing="false"  prefHeight="25.0" prefWidth="68.0" text="Update" />
+      <Button fx:id="btnDelete" layoutX="186.0" layoutY="222.0" mnemonicParsing="false"  prefHeight="25.0" prefWidth="100.0" text="Delete" />
+       <TableView fx:id="tvBooks" layoutX="309.0" layoutY="27.0" onMouseClicked="#handleMouseAction" prefHeight="220.0" prefWidth="482.0">
         <columns>
           <TableColumn fx:id="colISBN" prefWidth="75.0" text="ISBN" />
           <TableColumn fx:id="colTitle" prefWidth="75.0" text="Title" />
