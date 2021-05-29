@@ -85,4 +85,12 @@ public class MainController implements Initializable {
         showBooks();
     }
 
+    public void delete(ActionEvent actionEvent) {
+        if (tvBooks.getSelectionModel().getSelectedItem() != null) {
+            Book book = tvBooks.getSelectionModel().getSelectedItem();
+            System.out.println(book.getId());
+            deleteFromDB(book.getId());
+            showBooks();
+        }
+    }
 }
