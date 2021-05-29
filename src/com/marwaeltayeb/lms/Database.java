@@ -69,4 +69,22 @@ public class Database {
         System.out.println("Records created successfully");
     }
 
+    public static void deleteFromDB(int rawIndex) {
+        Connection c = getConnection();
+        try {
+            String sql = "DELETE from books where id = ?";
+            PreparedStatement deleteStatement = c.prepareStatement(sql);
+
+            // information needed to delete the row
+            deleteStatement.setInt(1, rawIndex);
+            deleteStatement.executeUpdate();
+
+            c.close();
+            System.out.println("Record successfully deleted");
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+
 }
