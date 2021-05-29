@@ -95,6 +95,21 @@ public class MainController implements Initializable {
         }
     }
 
+    public void update(ActionEvent actionEvent) {
+        if (tvBooks.getSelectionModel().getSelectedItem() != null) {
+            Book book = tvBooks.getSelectionModel().getSelectedItem();
+            book.setIsbn(Integer.parseInt(editISBN.getText()));
+            book.setTitle(editTitle.getText());
+            book.setAuthor(editAuthor.getText());
+            book.setYear(Integer.parseInt(editYear.getText()));
+            book.setPages(Integer.parseInt(editPages.getText()));
+            System.out.println("Book ID: " + book.getId());
+            updateDB(book);
+            showBooks();
+            clear();
+        }
+    }
+
     private void clear(){
         editISBN.setText("");
         editTitle.setText("");
