@@ -70,16 +70,16 @@ public class Database {
     }
 
     public static void deleteFromDB(int rawIndex) {
-        Connection c = getConnection();
+        Connection connection = getConnection();
         try {
             String sql = "DELETE from books where id = ?";
-            PreparedStatement deleteStatement = c.prepareStatement(sql);
+            PreparedStatement deleteStatement = connection.prepareStatement(sql);
 
             // information needed to delete the row
             deleteStatement.setInt(1, rawIndex);
             deleteStatement.executeUpdate();
 
-            c.close();
+            connection.close();
             System.out.println("Record successfully deleted");
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -87,4 +87,22 @@ public class Database {
         }
     }
 
+    public static void updateDB(Book book) {
+        Connection connection = getConnection();
+        try {
+            String sql = "UPDATE books SET isbn = '" + book.getIsbn() + "' , title = '" + book.getTitle()  + "' ,author = '"
+                    + book.getAuthor() + "' , year = '" + book.getYear()  + "' , pages = '" + book.getPages() +"' where id = " + book.getId() + "";
+
+            PreparedStatement updateStatement = connection.prepareStatement(sql);
+
+            // execute and update
+            updateStatement.executeUpdate();
+            connection.close();
+
+            System.out.println("Record successfully updated");
+        } catch (Exception e) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+    }
 }
