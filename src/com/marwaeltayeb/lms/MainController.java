@@ -1,15 +1,10 @@
 package com.marwaeltayeb.lms;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,41 +13,25 @@ import static com.marwaeltayeb.lms.Database.*;
 
 public class MainController implements Initializable {
 
-    @FXML
-    TextField editISBN;
-    @FXML
-    TextField editTitle;
-    @FXML
-    TextField editAuthor;
-    @FXML
-    TextField editYear;
-    @FXML
-    TextField editPages;
-    @FXML
-    Button btnInsert;
-    @FXML
-    Button btnUpdate;
-    @FXML
-    Button btnDelete;
-    @FXML
-    TableView<Book> tvBooks;
-    @FXML
-    TableColumn<Book, Integer> colISBN;
-    @FXML
-    TableColumn<Book, String> colTitle;
-    @FXML
-    TableColumn<Book, String> colAuthor;
-    @FXML
-    TableColumn<Book, Integer> colYear;
-    @FXML
-    TableColumn<Book, Integer> colPages;
+    @FXML private TextField editISBN;
+    @FXML private TextField editTitle;
+    @FXML private TextField editAuthor;
+    @FXML private TextField editYear;
+    @FXML private TextField editPages;
+
+    @FXML private TableView<Book> tvBooks;
+    @FXML private TableColumn<Book, Integer> colISBN;
+    @FXML private TableColumn<Book, String> colTitle;
+    @FXML private TableColumn<Book, String> colAuthor;
+    @FXML private TableColumn<Book, Integer> colYear;
+    @FXML private TableColumn<Book, Integer> colPages;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         showBooks();
     }
 
-    public void showBooks() {
+    private void showBooks() {
         ObservableList<Book> list = getBooksFromDB();
 
         colISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
@@ -64,7 +43,7 @@ public class MainController implements Initializable {
         tvBooks.setItems(list);
     }
 
-    public void handleMouseAction(MouseEvent mouseEvent) {
+    @FXML private void handleMouseAction() {
         Book book = tvBooks.getSelectionModel().getSelectedItem();
         editISBN.setText(String.valueOf(book.getIsbn()));
         editTitle.setText(book.getTitle());
@@ -73,7 +52,23 @@ public class MainController implements Initializable {
         editPages.setText(String.valueOf(book.getPages()));
     }
 
-    public void insert(ActionEvent actionEvent) {
+    @FXML private void insert() {
+        String isbnStr = editISBN.getText();
+        String titleStr = editTitle.getText();
+        String authorStr = editAuthor.getText();
+        String yearStr = editYear.getText();
+        String pagesStr = editPages.getText();
+
+        if (isbnStr.isEmpty() || titleStr.isEmpty() || authorStr.isEmpty()||  yearStr.isEmpty() ||  pagesStr.isEmpty()) {
+            showWarning();
+            return;
+        }
+
+        if(!isbnStr.matches("\\d*") || !yearStr.matches("\\d*") || !pagesStr.matches("\\d*")){
+            showError();
+            return;
+        }
+
         int isbn = Integer.parseInt(editISBN.getText());
         String title = editTitle.getText();
         String author = editAuthor.getText();
@@ -85,7 +80,7 @@ public class MainController implements Initializable {
         showBooks();
     }
 
-    public void delete(ActionEvent actionEvent) {
+    @FXML private void delete() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             Book book = tvBooks.getSelectionModel().getSelectedItem();
             System.out.println(book.getId());
@@ -95,7 +90,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void update(ActionEvent actionEvent) {
+    @FXML private void update() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             Book book = tvBooks.getSelectionModel().getSelectedItem();
             book.setIsbn(Integer.parseInt(editISBN.getText()));
@@ -116,5 +111,15 @@ public class MainController implements Initializable {
         editAuthor.setText("");
         editYear.setText("");
         editPages.setText("");
+    }
+
+    private void showWarning() {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "Input values must not be empty", ButtonType.OK);
+        alert.showAndWait();
+    }
+
+    private void showError() {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Input must be only positive numbers", ButtonType.OK);
+        alert.showAndWait();
     }
 }
