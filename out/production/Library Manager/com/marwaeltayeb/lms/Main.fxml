@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="268.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
+<AnchorPane prefHeight="268.0" prefWidth="809.0" style="-fx-background-color: #BADAFF;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
    <children>
       <VBox layoutX="20.0" layoutY="27.0" prefHeight="167.0" prefWidth="100.0" spacing="20.0">
          <children>
