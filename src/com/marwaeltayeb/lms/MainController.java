@@ -1,6 +1,9 @@
 package com.marwaeltayeb.lms;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,26 +16,40 @@ import static com.marwaeltayeb.lms.Database.*;
 
 public class MainController implements Initializable {
 
-    @FXML private TextField editISBN;
-    @FXML private TextField editTitle;
-    @FXML private TextField editAuthor;
-    @FXML private TextField editYear;
-    @FXML private TextField editPages;
+    @FXML
+    private TextField editISBN;
+    @FXML
+    private TextField editTitle;
+    @FXML
+    private TextField editAuthor;
+    @FXML
+    private TextField editYear;
+    @FXML
+    private TextField editPages;
+    @FXML
+    private TextField editSearch;
 
-    @FXML private TableView<Book> tvBooks;
-    @FXML private TableColumn<Book, Integer> colISBN;
-    @FXML private TableColumn<Book, String> colTitle;
-    @FXML private TableColumn<Book, String> colAuthor;
-    @FXML private TableColumn<Book, Integer> colYear;
-    @FXML private TableColumn<Book, Integer> colPages;
+    @FXML
+    private TableView<Book> tvBooks;
+    @FXML
+    private TableColumn<Book, Integer> colISBN;
+    @FXML
+    private TableColumn<Book, String> colTitle;
+    @FXML
+    private TableColumn<Book, String> colAuthor;
+    @FXML
+    private TableColumn<Book, Integer> colYear;
+    @FXML
+    private TableColumn<Book, Integer> colPages;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Platform.runLater(() -> editSearch.requestFocus());
         showBooks();
     }
 
     private void showBooks() {
-        ObservableList<Book> list = getBooksFromDB();
+        ObservableList<Book> bookList = getBooksFromDB();
 
         colISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -40,10 +57,11 @@ public class MainController implements Initializable {
         colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
         colPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
 
-        tvBooks.setItems(list);
+        searchForBooks(bookList);
     }
 
-    @FXML private void handleMouseAction() {
+    @FXML
+    private void handleMouseAction() {
         Book book = tvBooks.getSelectionModel().getSelectedItem();
         editISBN.setText(String.valueOf(book.getIsbn()));
         editTitle.setText(book.getTitle());
@@ -52,19 +70,20 @@ public class MainController implements Initializable {
         editPages.setText(String.valueOf(book.getPages()));
     }
 
-    @FXML private void insert() {
+    @FXML
+    private void insert() {
         String isbnStr = editISBN.getText();
         String titleStr = editTitle.getText();
         String authorStr = editAuthor.getText();
         String yearStr = editYear.getText();
         String pagesStr = editPages.getText();
 
-        if (isbnStr.isEmpty() || titleStr.isEmpty() || authorStr.isEmpty()||  yearStr.isEmpty() ||  pagesStr.isEmpty()) {
+        if (isbnStr.isEmpty() || titleStr.isEmpty() || authorStr.isEmpty() || yearStr.isEmpty() || pagesStr.isEmpty()) {
             showWarning();
             return;
         }
 
-        if(!isbnStr.matches("\\d*") || !yearStr.matches("\\d*") || !pagesStr.matches("\\d*")){
+        if (!isbnStr.matches("\\d*") || !yearStr.matches("\\d*") || !pagesStr.matches("\\d*")) {
             showError();
             return;
         }
@@ -77,10 +96,12 @@ public class MainController implements Initializable {
 
         Book book = new Book(isbn, title, author, year, pages);
         insertToDB(book);
+        clear();
         showBooks();
     }
 
-    @FXML private void delete() {
+    @FXML
+    private void delete() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             Book book = tvBooks.getSelectionModel().getSelectedItem();
             System.out.println(book.getId());
@@ -90,7 +111,8 @@ public class MainController implements Initializable {
         }
     }
 
-    @FXML private void update() {
+    @FXML
+    private void update() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             Book book = tvBooks.getSelectionModel().getSelectedItem();
             book.setIsbn(Integer.parseInt(editISBN.getText()));
@@ -105,7 +127,7 @@ public class MainController implements Initializable {
         }
     }
 
-    private void clear(){
+    private void clear() {
         editISBN.setText("");
         editTitle.setText("");
         editAuthor.setText("");
@@ -121,5 +143,39 @@ public class MainController implements Initializable {
     private void showError() {
         Alert alert = new Alert(Alert.AlertType.ERROR, "Input must be only positive numbers", ButtonType.OK);
         alert.showAndWait();
+    }
+
+    private void searchForBooks(ObservableList<Book> bookList) {
+        // Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Book> filteredData = new FilteredList<>(bookList, b -> true);
+
+        // Set the filter Predicate whenever the filter changes.
+        editSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(book -> {
+
+
+                // Compare first title and last title of every book with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches title.
+                } else if (book.getAuthor().toLowerCase().contains(lowerCaseFilter)) {
+                    return true; // Filter matches author.
+                } else if (String.valueOf(book.getYear()).contains(lowerCaseFilter)) {
+                    return true; // Filter matches year.
+                } else
+                    return false; // Does not match.
+            });
+        });
+
+        // Wrap the FilteredList in a SortedList.
+        SortedList<Book> sortedData = new SortedList<>(filteredData);
+
+        // Bind the SortedList comparator to the TableView comparator.
+        // Otherwise, sorting the TableView would have no effect.
+        sortedData.comparatorProperty().bind(tvBooks.comparatorProperty());
+
+        // Add sorted (and filtered) data to the table.
+        tvBooks.setItems(sortedData);
     }
 }

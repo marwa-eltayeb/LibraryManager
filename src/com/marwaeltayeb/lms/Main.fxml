@@ -4,50 +4,52 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="268.0" prefWidth="809.0" style="-fx-background-color: #BADAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
+<AnchorPane prefHeight="320.0" prefWidth="809.0" style="-fx-background-color: #BADAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
    <children>
-      <VBox layoutX="20.0" layoutY="27.0" prefHeight="167.0" prefWidth="100.0" spacing="20.0">
+      <VBox layoutX="14.0" layoutY="81.0" prefHeight="168.0" prefWidth="86.0" spacing="20.0">
          <children>
-            <Label text="ISBN" />
+            <Label prefHeight="12.0" prefWidth="26.0" text="ISBN" />
             <Label layoutX="10.0" layoutY="10.0" text="Title" />
             <Label layoutX="10.0" layoutY="27.0" text="Author" />
             <Label layoutX="10.0" layoutY="44.0" text="Year" />
             <Label layoutX="10.0" layoutY="61.0" text="Pages" />
          </children></VBox>
-      <VBox layoutX="104.0" layoutY="27.0" prefHeight="174.0" prefWidth="181.0" spacing="10.0">
+      <VBox layoutX="104.0" layoutY="82.0" prefHeight="168.0" prefWidth="181.0" spacing="10.0">
          <children>
-            <TextField fx:id="editISBN" prefHeight="25.0" prefWidth="111.0" />
+            <TextField fx:id="editISBN" prefHeight="7.0" prefWidth="181.0" />
             <TextField fx:id="editTitle" layoutX="10.0" layoutY="10.0" />
             <TextField fx:id="editAuthor" layoutX="10.0" layoutY="35.0" />
             <TextField fx:id="editYear" layoutX="10.0" layoutY="60.0" />
-            <TextField fx:id="editPages" layoutX="10.0" layoutY="85.0" />
+            <TextField fx:id="editPages" layoutX="10.0" layoutY="85.0" prefHeight="26.0" prefWidth="181.0" />
          </children></VBox>
-      <Button fx:id="btnInsert" layoutX="14.0" layoutY="222.0" mnemonicParsing="false" onAction="#insert" prefHeight="25.0" prefWidth="80.0" text="Insert">
+      <Button fx:id="btnInsert" layoutX="14.0" layoutY="273.0" mnemonicParsing="false" onAction="#insert" prefHeight="25.0" prefWidth="71.0" text="Insert">
          <graphic>
              <Pane HBox.hgrow="ALWAYS" />
              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                  <Image url="@../lms/assets/add.png" />
              </ImageView>
          </graphic></Button>
-      <Button fx:id="btnUpdate" layoutX="111.0" layoutY="222.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="80.0" text="Update">
+      <Button fx:id="btnUpdate" layoutX="102.0" layoutY="273.0" mnemonicParsing="false" onAction="#update" prefHeight="25.0" prefWidth="80.0" text="Update">
          <graphic>
             <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../lms/assets/update.jpg" />
             </ImageView>
          </graphic></Button>
-      <Button fx:id="btnDelete" layoutX="209.0" layoutY="222.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="80.0" text="Delete">
+      <Button fx:id="btnDelete" layoutX="202.0" layoutY="273.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="80.0" text="Delete">
          <graphic>
-            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="16.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../lms/assets/delete.png" />
             </ImageView>
          </graphic></Button>
-       <TableView fx:id="tvBooks" layoutX="309.0" layoutY="27.0" onMouseClicked="#handleMouseAction" prefHeight="220.0" prefWidth="482.0">
+       <Label fx:id="lblText" layoutX="142.0" layoutY="23.0" prefHeight="25.0" prefWidth="63.0" style="-fx-font-weight: bold;" text="Search Box" />
+       <TextField fx:id="editSearch" layoutX="227.0" layoutY="23.0" prefHeight="25.0" prefWidth="434.0" promptText="Search books" />
+       <TableView fx:id="tvBooks" layoutX="304.0" layoutY="79.0" onMouseClicked="#handleMouseAction" prefHeight="219.0" prefWidth="493.0">
         <columns>
           <TableColumn fx:id="colISBN" prefWidth="75.0" text="ISBN" />
-          <TableColumn fx:id="colTitle" prefWidth="75.0" text="Title" />
-            <TableColumn fx:id="colAuthor" prefWidth="112.0" text="Author" />
-            <TableColumn fx:id="colYear" prefWidth="110.0" text="Year" />
-            <TableColumn fx:id="colPages" prefWidth="112.0" text="Pages" />
+          <TableColumn fx:id="colTitle" prefWidth="151.0" text="Title" />
+            <TableColumn fx:id="colAuthor" prefWidth="121.0" text="Author" />
+            <TableColumn fx:id="colYear" prefWidth="77.0" text="Year" />
+            <TableColumn fx:id="colPages" prefWidth="67.0" text="Pages" />
         </columns>
       </TableView>
    </children>
