@@ -42,6 +42,8 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Book, Integer> colPages;
 
+    private ObservableList<Book> bookList;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> editSearch.requestFocus());
@@ -49,7 +51,7 @@ public class MainController implements Initializable {
     }
 
     private void showBooks() {
-        ObservableList<Book> bookList = getBooksFromDB();
+        bookList = getBooksFromDB();
 
         colISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -63,6 +65,7 @@ public class MainController implements Initializable {
     @FXML
     private void handleMouseAction() {
         Book book = tvBooks.getSelectionModel().getSelectedItem();
+        if (book==null) return;
         editISBN.setText(String.valueOf(book.getIsbn()));
         editTitle.setText(book.getTitle());
         editAuthor.setText(book.getAuthor());
@@ -72,14 +75,14 @@ public class MainController implements Initializable {
 
     @FXML
     private void insert() {
-        String isbnStr = editISBN.getText();
-        String titleStr = editTitle.getText();
-        String authorStr = editAuthor.getText();
-        String yearStr = editYear.getText();
-        String pagesStr = editPages.getText();
+        String isbnStr = editISBN.getText().trim();
+        String titleStr = editTitle.getText().trim();
+        String authorStr = editAuthor.getText().trim();
+        String yearStr = editYear.getText().trim();
+        String pagesStr = editPages.getText().trim();
 
         if (isbnStr.isEmpty() || titleStr.isEmpty() || authorStr.isEmpty() || yearStr.isEmpty() || pagesStr.isEmpty()) {
-            showWarning();
+            showWarning("Input values must not be empty");
             return;
         }
 
@@ -95,6 +98,11 @@ public class MainController implements Initializable {
         int pages = Integer.parseInt(editPages.getText());
 
         Book book = new Book(isbn, title, author, year, pages);
+
+        if(bookList.contains(book)){
+            showWarning("This book has been inserted before");
+            return;
+        }
         insertToDB(book);
         clear();
         showBooks();
@@ -120,7 +128,6 @@ public class MainController implements Initializable {
             book.setAuthor(editAuthor.getText());
             book.setYear(Integer.parseInt(editYear.getText()));
             book.setPages(Integer.parseInt(editPages.getText()));
-            System.out.println("Book ID: " + book.getId());
             updateDB(book);
             showBooks();
             clear();
@@ -135,8 +142,8 @@ public class MainController implements Initializable {
         editPages.setText("");
     }
 
-    private void showWarning() {
-        Alert alert = new Alert(Alert.AlertType.WARNING, "Input values must not be empty", ButtonType.OK);
+    private void showWarning(String text) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, text, ButtonType.OK);
         alert.showAndWait();
     }
 

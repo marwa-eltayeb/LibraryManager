@@ -1,5 +1,7 @@
 package com.marwaeltayeb.lms;
 
+import java.util.Objects;
+
 public class Book {
 
     private int id;
@@ -68,5 +70,18 @@ public class Book {
 
     public void setPages(int pages) {
         this.pages = pages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return isbn == book.isbn && year == book.year && pages == book.pages && Objects.equals(title, book.title) && Objects.equals(author, book.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, isbn, title, author, year, pages);
     }
 }

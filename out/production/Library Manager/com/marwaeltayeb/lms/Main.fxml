@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="320.0" prefWidth="809.0" style="-fx-background-color: #BADAFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
+<AnchorPane prefHeight="320.0" prefWidth="809.0" style="-fx-background-color: #BADAFF;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.marwaeltayeb.lms.MainController">
    <children>
       <VBox layoutX="14.0" layoutY="81.0" prefHeight="168.0" prefWidth="86.0" spacing="20.0">
          <children>
@@ -42,7 +42,7 @@
             </ImageView>
          </graphic></Button>
        <Label fx:id="lblText" layoutX="142.0" layoutY="23.0" prefHeight="25.0" prefWidth="63.0" style="-fx-font-weight: bold;" text="Search Box" />
-       <TextField fx:id="editSearch" layoutX="227.0" layoutY="23.0" prefHeight="25.0" prefWidth="434.0" />
+       <TextField fx:id="editSearch" layoutX="227.0" layoutY="23.0" prefHeight="25.0" prefWidth="434.0" promptText="Search books" />
        <TableView fx:id="tvBooks" layoutX="304.0" layoutY="79.0" onMouseClicked="#handleMouseAction" prefHeight="219.0" prefWidth="493.0">
         <columns>
           <TableColumn fx:id="colISBN" prefWidth="75.0" text="ISBN" />
