@@ -52,6 +52,7 @@ public class MainController implements Initializable {
 
     private void showBooks() {
         bookList = getBooksFromDB();
+        tvBooks.refresh();
 
         colISBN.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -87,7 +88,7 @@ public class MainController implements Initializable {
         }
 
         if (!isbnStr.matches("\\d*") || !yearStr.matches("\\d*") || !pagesStr.matches("\\d*")) {
-            showError();
+            showError("Input must be only positive numbers");
             return;
         }
 
@@ -147,8 +148,8 @@ public class MainController implements Initializable {
         alert.showAndWait();
     }
 
-    private void showError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "Input must be only positive numbers", ButtonType.OK);
+    private void showError(String text) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, text, ButtonType.OK);
         alert.showAndWait();
     }
 
