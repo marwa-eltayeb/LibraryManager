@@ -48,6 +48,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> editSearch.requestFocus());
         showBooks();
+        searchForBooks(bookList);
     }
 
     private void showBooks() {
@@ -60,7 +61,7 @@ public class MainController implements Initializable {
         colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
         colPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
 
-        searchForBooks(bookList);
+        tvBooks.setItems(bookList);
     }
 
     @FXML
@@ -88,7 +89,7 @@ public class MainController implements Initializable {
         }
 
         if (!isbnStr.matches("\\d*") || !yearStr.matches("\\d*") || !pagesStr.matches("\\d*")) {
-            showError("Input must be only positive numbers");
+            showError();
             return;
         }
 
@@ -105,8 +106,8 @@ public class MainController implements Initializable {
             return;
         }
         insertToDB(book);
-        clear();
         showBooks();
+        clear();
     }
 
     @FXML
@@ -124,6 +125,10 @@ public class MainController implements Initializable {
     private void update() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             Book book = tvBooks.getSelectionModel().getSelectedItem();
+            if(book.getTitle().equals(editTitle.getText())) {
+                showWarning("You have not updated this book");
+                return;
+            }
             book.setIsbn(Integer.parseInt(editISBN.getText()));
             book.setTitle(editTitle.getText());
             book.setAuthor(editAuthor.getText());
@@ -148,8 +153,8 @@ public class MainController implements Initializable {
         alert.showAndWait();
     }
 
-    private void showError(String text) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, text, ButtonType.OK);
+    private void showError() {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Input must be only positive numbers", ButtonType.OK);
         alert.showAndWait();
     }
 
@@ -162,17 +167,15 @@ public class MainController implements Initializable {
             filteredData.setPredicate(book -> {
 
 
-                // Compare first title and last title of every book with filter text.
+                // Get new value and convert it to lowercase
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (book.getTitle().toLowerCase().contains(lowerCaseFilter)) {
+                if (book.getTitle().toLowerCase().startsWith(lowerCaseFilter)) {
                     return true; // Filter matches title.
-                } else if (book.getAuthor().toLowerCase().contains(lowerCaseFilter)) {
+                } else if (book.getAuthor().toLowerCase().startsWith(lowerCaseFilter)) {
                     return true; // Filter matches author.
-                } else if (String.valueOf(book.getYear()).contains(lowerCaseFilter)) {
-                    return true; // Filter matches year.
                 } else
-                    return false; // Does not match.
+                    return  (String.valueOf(book.getYear()).startsWith(lowerCaseFilter)) ; // Filter matches year.
             });
         });
 
