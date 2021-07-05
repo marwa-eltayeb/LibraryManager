@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,31 +17,21 @@ import static com.marwaeltayeb.lms.Database.*;
 
 public class MainController implements Initializable {
 
-    @FXML
-    private TextField editISBN;
-    @FXML
-    private TextField editTitle;
-    @FXML
-    private TextField editAuthor;
-    @FXML
-    private TextField editYear;
-    @FXML
-    private TextField editPages;
-    @FXML
-    private TextField editSearch;
+    @FXML private AnchorPane anchorId;
 
-    @FXML
-    private TableView<Book> tvBooks;
-    @FXML
-    private TableColumn<Book, Integer> colISBN;
-    @FXML
-    private TableColumn<Book, String> colTitle;
-    @FXML
-    private TableColumn<Book, String> colAuthor;
-    @FXML
-    private TableColumn<Book, Integer> colYear;
-    @FXML
-    private TableColumn<Book, Integer> colPages;
+    @FXML private TextField editISBN;
+    @FXML private TextField editTitle;
+    @FXML private TextField editAuthor;
+    @FXML private TextField editYear;
+    @FXML private TextField editPages;
+    @FXML private TextField editSearch;
+
+    @FXML private TableView<Book> tvBooks;
+    @FXML private TableColumn<Book, Integer> colISBN;
+    @FXML private TableColumn<Book, String> colTitle;
+    @FXML private TableColumn<Book, String> colAuthor;
+    @FXML private TableColumn<Book, Integer> colYear;
+    @FXML private TableColumn<Book, Integer> colPages;
 
     private ObservableList<Book> bookList;
 
@@ -48,7 +39,6 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> editSearch.requestFocus());
         showBooks();
-        searchForBooks(bookList);
     }
 
     private void showBooks() {
@@ -62,10 +52,10 @@ public class MainController implements Initializable {
         colPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
 
         tvBooks.setItems(bookList);
+        searchForBooks(bookList);
     }
 
-    @FXML
-    private void handleMouseAction() {
+    @FXML private void handleMouseAction() {
         Book book = tvBooks.getSelectionModel().getSelectedItem();
         if (book==null) return;
         editISBN.setText(String.valueOf(book.getIsbn()));
@@ -75,8 +65,7 @@ public class MainController implements Initializable {
         editPages.setText(String.valueOf(book.getPages()));
     }
 
-    @FXML
-    private void insert() {
+    @FXML private void insert() {
         String isbnStr = editISBN.getText().trim();
         String titleStr = editTitle.getText().trim();
         String authorStr = editAuthor.getText().trim();
@@ -110,25 +99,18 @@ public class MainController implements Initializable {
         clear();
     }
 
-    @FXML
-    private void delete() {
+    @FXML private void delete() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             Book book = tvBooks.getSelectionModel().getSelectedItem();
-            System.out.println(book.getId());
             deleteFromDB(book.getId());
             showBooks();
             clear();
         }
     }
 
-    @FXML
-    private void update() {
+    @FXML private void update() {
         if (tvBooks.getSelectionModel().getSelectedItem() != null) {
             Book book = tvBooks.getSelectionModel().getSelectedItem();
-            if(book.getTitle().equals(editTitle.getText())) {
-                showWarning("You have not updated this book");
-                return;
-            }
             book.setIsbn(Integer.parseInt(editISBN.getText()));
             book.setTitle(editTitle.getText());
             book.setAuthor(editAuthor.getText());
@@ -150,11 +132,13 @@ public class MainController implements Initializable {
 
     private void showWarning(String text) {
         Alert alert = new Alert(Alert.AlertType.WARNING, text, ButtonType.OK);
+        alert.initOwner(anchorId.getScene().getWindow());
         alert.showAndWait();
     }
 
     private void showError() {
         Alert alert = new Alert(Alert.AlertType.ERROR, "Input must be only positive numbers", ButtonType.OK);
+        alert.initOwner(anchorId.getScene().getWindow());
         alert.showAndWait();
     }
 
