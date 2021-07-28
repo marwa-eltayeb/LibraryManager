@@ -10,5 +10,8 @@ That is a JavaFX application for creating a library management system. It is a p
 With **LibraryManager**, you can insert, delete, or update books. You will get all books and search for your favorite one.
 
 
-![Image Resize Service](https://i.imgur.com/HzxBOLN.png)
+![Library_Manager](https://i.imgur.com/HzxBOLN.png)
+
+Project Preview: [Youtube](https://youtu.be/W9kfD9YYAJk).
+
 
